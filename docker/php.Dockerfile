@@ -5,7 +5,7 @@
 
 FROM dunglas/frankenphp:1.6.0-php8.4.7 AS frankenphp_upstream
 
-FROM node:22.16.0-slim AS front_base
+FROM node:24.0.2-slim AS front_base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
