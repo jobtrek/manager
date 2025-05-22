@@ -1,0 +1,29 @@
+{
+	frankenphp {
+		worker /app/public/frankenphp-worker.php 8
+	}
+}
+
+# PHP server for Laravel
+:8800 {
+	# Set the webroot to the public/ directory
+	root public/
+	# Enable compression (optional)
+	encode zstd br gzip
+	# Execute PHP files from the public/ directory and serve assets
+	php_server {
+		index frankenphp-worker.php
+		try_files {path} frankenphp-worker.php
+		# Required for the public/storage/ directory...
+		resolve_root_symlink
+	}
+}
+
+# Front end SPA
+:8801 {
+	root * /app/dist
+	encode zstd br gzip
+	try_files {path} /index.html
+	header /index.html Cache-Control "public, max-age=0, must-revalidate"
+	file_server
+}

@@ -1,0 +1,92 @@
+services:
+  php-server:
+    build:
+      context: .
+      args:
+        - PUBLIC_APP_URL=${PUBLIC_APP_URL}
+      dockerfile: ./docker/php.Dockerfile
+    restart: unless-stopped
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - "8800:8800" # Only HTTP, use a reverse proxy like traefik for ssl termination
+      - "8801:8801"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - laravel_storage:/storage/app
+    networks:
+      - manager_app_pro_network
+    env_file:
+      - ".env"
+    depends_on:
+      - memcached
+      - pgsql
+      - meilisearch
+
+  memcached:
+    image: 'memcached:alpine'
+    restart: unless-stopped
+    ports:
+      - '${FORWARD_MEMCACHED_PORT:-11211}:11211'
+    networks:
+      - manager_app_pro_network
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.13.3
+    restart: unless-stopped
+    volumes:
+      - meilisearch_data:/meili_data
+    networks:
+      - manager_app_pro_network
+
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - '--no-verbose'
+        - '--spider'
+        - 'http://localhost:7700/health'
+      retries: 3
+      timeout: 5s
+
+  pgsql:
+    build:
+      context: ./docker
+      dockerfile: ./pgsql.Dockerfile
+    restart: unless-stopped
+    environment:
+      PGPASSWORD: '${DB_PASSWORD:-secret}'
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+    #ports:
+    #  - '5432:5432'
+    volumes:
+      - pgsql_data:/var/lib/postgresql/data
+    networks:
+      - manager_app_pro_network
+
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - '-q'
+        - '-d'
+        - '${DB_DATABASE}'
+        - '-U'
+        - '${DB_USERNAME}'
+      retries: 3
+      timeout: 5s
+
+networks:
+  manager_app_pro_network:
+
+
+volumes:
+  laravel_storage:
+  caddy_data:
+  caddy_config:
+  pgsql_data:
+  redis_data:
+  meilisearch_data:
