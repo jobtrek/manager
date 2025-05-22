@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { UserLoginSchema } from '@/schemas/userSchemas';
 import { useRouter } from '@tanstack/react-router';
 import * as v from 'valibot';
+import courbes from '@/assets/courbes.svg'
 
 export function LoginForm({
   className,
@@ -84,7 +85,7 @@ export function LoginForm({
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/placeholder.svg"
+              src={courbes}
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
