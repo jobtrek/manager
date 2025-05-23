@@ -1,13 +1,13 @@
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth';
-import { Link, createFileRoute } from '@tanstack/react-router';
+import { Button } from '@/components/ui/button'
+import { useAuth } from '@/hooks/useAuth'
+import { Link, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
   component: Index,
-});
+})
 
 function Index() {
-  const auth = useAuth();
+  const auth = useAuth()
 
   return (
     <div className="p-2">
@@ -19,5 +19,5 @@ function Index() {
         <Link to={'/login'}>Login page</Link>
       </Button>
     </div>
-  );
+  )
 }

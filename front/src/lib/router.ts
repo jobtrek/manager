@@ -1,7 +1,7 @@
-import { AuthenticationState } from '@/hooks/useAuth';
-import { QueryClient } from '@tanstack/react-query';
-import { createRouter } from '@tanstack/react-router';
-import { routeTree } from '../routeTree.gen';
+import { AuthenticationState } from '@/hooks/useAuth'
+import { QueryClient } from '@tanstack/react-query'
+import { createRouter } from '@tanstack/react-router'
+import { routeTree } from '../routeTree.gen'
 
 /**
  * TanStack query initialisation
@@ -12,14 +12,14 @@ export const queryClient = new QueryClient({
       staleTime: 2000,
     },
   },
-});
+})
 
 /**
  * TanStack router initialisation
  */
 export interface RouterContext {
-  queryClient: QueryClient;
-  auth: AuthenticationState;
+  queryClient: QueryClient
+  auth: AuthenticationState
 }
 export const router = createRouter({
   routeTree,
@@ -31,9 +31,9 @@ export const router = createRouter({
   scrollRestoration: true,
   defaultStructuralSharing: true,
   defaultPreloadStaleTime: 0,
-});
+})
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router;
+    router: typeof router
   }
 }

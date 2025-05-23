@@ -1,13 +1,13 @@
-import { ChartAreaInteractive } from '@/components/chart-area-interactive';
-import { DataTable } from '@/components/data-table';
-import { SectionCards } from '@/components/section-cards';
-import { SiteHeader } from '@/components/site-header';
-import { createFileRoute } from '@tanstack/react-router';
-import data from '../app/dashboard/data.json';
+import { ChartAreaInteractive } from '@/components/chart-area-interactive'
+import { DataTable } from '@/components/data-table'
+import { SectionCards } from '@/components/section-cards'
+import { SiteHeader } from '@/components/site-header'
+import { createFileRoute } from '@tanstack/react-router'
+import data from '../app/dashboard/data.json'
 
 export const Route = createFileRoute('/_dashboardLayout/home')({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
   return (
@@ -25,5 +25,5 @@ function RouteComponent() {
         </div>
       </div>
     </>
-  );
+  )
 }

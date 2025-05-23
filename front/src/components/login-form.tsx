@@ -1,37 +1,37 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useAuthSignInMutation } from '@/lib/auth/authQueries';
-import { cn } from '@/lib/utils';
-import { UserLoginSchema } from '@/schemas/userSchemas';
-import { useRouter } from '@tanstack/react-router';
-import * as v from 'valibot';
 import courbes from '@/assets/courbes.svg'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { UserLoginSchema } from '@/domain/auth/authUserSchema.ts'
+import { useAuthSignInMutation } from '@/lib/auth/authQueries'
+import { cn } from '@/lib/utils'
+import { useRouter } from '@tanstack/react-router'
+import * as v from 'valibot'
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
-  const router = useRouter();
-  const signInMutation = useAuthSignInMutation();
+  const router = useRouter()
+  const signInMutation = useAuthSignInMutation()
   const handleSubmit = async (formData: FormData) => {
     const validData = v.parse(UserLoginSchema, {
       email: formData.get('email'),
       password: formData.get('password'),
-    });
+    })
     // try to Login
     try {
-      await signInMutation.mutateAsync(validData);
+      await signInMutation.mutateAsync(validData)
 
       router.navigate({
         to: '/home',
-      });
+      })
     } catch (e) {
-      console.log('Failed login attempt');
-      console.log(e);
+      console.log('Failed login attempt')
+      console.log(e)
     }
-  };
+  }
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
@@ -97,5 +97,5 @@ export function LoginForm({
         and <a href="#">Privacy Policy</a>.
       </div>
     </div>
-  );
+  )
 }
