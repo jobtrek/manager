@@ -1,29 +1,10 @@
-# Rsbuild project
+# Manager app, front end SPA
 
-## Setup
+This folder contains the source code of the front end app.
+It is a SPA build with some tanstack components and react.
 
-Install the dependencies:
+## Architecture
 
-```bash
-pnpm install
-```
+### Libraries
 
-## Get started
-
-Start the dev server:
-
-```bash
-pnpm dev
-```
-
-Build the app for production:
-
-```bash
-pnpm build
-```
-
-Preview the production build locally:
-
-```bash
-pnpm preview
-```
+- 

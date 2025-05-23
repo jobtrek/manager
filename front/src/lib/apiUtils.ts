@@ -3,6 +3,10 @@
  */
 import ky from 'ky'
 
+// TODO: Automatic refresh oh the XSRF-TOKEN cookie
+// TODO: Automatic management of the JWT token for the postgrest api (get the tocken if none, refresh it if expired)
+// TODO: Add an after hook that redirect to login page on 404 response from api (or 404 error boundary)
+
 // Replace with an environment import
 const baseUrl = import.meta.env.PUBLIC_APP_URL
 
@@ -14,7 +18,7 @@ const api = ky.create({
       (request) => {
         // Setup the X-XSRF-TOKEN for laravel sanctum (from XSRF-TOKEN cookie)
         try {
-          console.info(document.cookie)
+          // @ts-expect-error cookie can be undefined, catched by the try/catch block
           const xsrfToken = document.cookie
             .split('; ')
             .find((row) => row.startsWith('XSRF-TOKEN='))
@@ -34,7 +38,5 @@ const api = ky.create({
     Accept: 'application/json',
   },
 })
-
-// TODO: Add an after hook that redirect to login page on 404 response from api
 
 export { api }

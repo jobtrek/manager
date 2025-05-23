@@ -1,9 +1,8 @@
 import courbes from '@/assets/courbes.svg'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { authSignInFormOpts } from '@/domain/auth/authSignInFormOpts.tsx'
 import { UserLoginSchema } from '@/domain/auth/authUserSchema.ts'
+import { useAppForm } from '@/hooks/useAppForm.tsx'
 import { useAuthSignInMutation } from '@/lib/auth/authQueries'
 import { cn } from '@/lib/utils'
 import { useRouter } from '@tanstack/react-router'
@@ -15,29 +14,36 @@ export function LoginForm({
 }: React.ComponentProps<'div'>) {
   const router = useRouter()
   const signInMutation = useAuthSignInMutation()
-  const handleSubmit = async (formData: FormData) => {
-    const validData = v.parse(UserLoginSchema, {
-      email: formData.get('email'),
-      password: formData.get('password'),
-    })
-    // try to Login
-    try {
-      await signInMutation.mutateAsync(validData)
 
-      router.navigate({
-        to: '/home',
-      })
-    } catch (e) {
-      console.log('Failed login attempt')
-      console.log(e)
-    }
-  }
+  const form = useAppForm({
+    ...authSignInFormOpts,
+    onSubmit: async ({ value }) => {
+      const validData = v.parse(UserLoginSchema, value)
+      // try to Login
+      try {
+        await signInMutation.mutateAsync(validData)
+
+        router.navigate({
+          to: '/home',
+        })
+      } catch (e) {
+        console.log('Failed login attempt')
+        console.log(e)
+      }
+    },
+  })
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form action={handleSubmit} className="p-6 md:p-8">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              form.handleSubmit()
+            }}
+            className="p-6 md:p-8"
+          >
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Bienvenue</h1>
@@ -45,31 +51,24 @@ export function LoginForm({
                   Connectez vous à la plateforme Jobtrek
                 </p>
               </div>
-              <div className="grid gap-3">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <div className="grid gap-3">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input id="password" type="password" name="password" required />
-              </div>
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
+              <form.AppField name="email">
+                {(field) => <field.TextField label="Email" type="text" />}
+              </form.AppField>
+              <form.AppField name="password">
+                {(field) => (
+                  <field.TextField label="Password" type="password">
+                    <a
+                      href="#"
+                      className="ml-auto text-sm underline-offset-2 hover:underline"
+                    >
+                      Forgot your password?
+                    </a>
+                  </field.TextField>
+                )}
+              </form.AppField>
+              <form.AppForm>
+                <form.SubmitButton label="Login" />
+              </form.AppForm>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
                   Or
