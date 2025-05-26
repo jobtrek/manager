@@ -3,7 +3,7 @@
 # Builds the front assets and copy them to prod image
 # Installs the backend and optimise files
 
-FROM dunglas/frankenphp:1.6.0-php8.4.7 AS frankenphp_upstream
+FROM dunglas/frankenphp:1.6.2-php8.4.7 AS frankenphp_upstream
 
 FROM node:22.16.0-slim AS front_base
 ENV PNPM_HOME="/pnpm"
