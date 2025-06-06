@@ -4,7 +4,7 @@
 import ky from 'ky'
 
 // TODO: Automatic refresh oh the XSRF-TOKEN cookie
-// TODO: Automatic management of the JWT token for the postgrest api (get the tocken if none, refresh it if expired)
+// TODO: Automatic management of the JWT token for the postgrest api (get the token if none, refresh it if expired)
 // TODO: Add an after hook that redirect to login page on 404 response from api (or 404 error boundary)
 
 // Replace with an environment import
