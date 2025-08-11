@@ -33,7 +33,7 @@ services:
       - manager_app_pro_network
 
   meilisearch:
-    image: getmeili/meilisearch:v1.15.2
+    image: getmeili/meilisearch:v1.16.0
     restart: unless-stopped
     volumes:
       - meilisearch_data:/meili_data
