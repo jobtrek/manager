@@ -1,4 +1,4 @@
-FROM postgres:17.5-bookworm
+FROM postgres:18.0-bookworm
 USER postgres
 
 COPY ./postgresql.conf /etc/postgresql/
